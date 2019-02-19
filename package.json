@@ -1,0 +1,20 @@
+{
+  "name": "unknown-chapters-admin-server",
+  "version": "1.0.0",
+  "description": "Admin app server for the unknown chapters website",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tudor Rotarus",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "compression": "^1.7.3",
+    "express": "^4.16.4"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.9"
+  }
+}
