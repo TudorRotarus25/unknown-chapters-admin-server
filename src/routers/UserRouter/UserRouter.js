@@ -1,11 +1,12 @@
 const express = require('express');
-
 const router = express.Router();
 
-router.get('/', (req, res) => {
-  res.json({
-    path: 'UserRouter',
-  });
-});
+const {
+  createAccount,
+  login,
+} = require('../../controllers/UserController/UserController');
+
+router.post('/createAccount/', createAccount);
+router.post('/login/', login);
 
 module.exports = router;
