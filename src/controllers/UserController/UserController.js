@@ -9,7 +9,6 @@ const createAccount = (req, res) => {
     || !confirmPassword
   ) {
     res.status(400).json({
-      success: false,
       error: "Some mandatory fields are missing",
     });
     return;
@@ -17,7 +16,6 @@ const createAccount = (req, res) => {
 
   if (password !== confirmPassword) {
     res.status(400).json({
-      success: false,
       error: "Passwords don\'t match",
     });
     return;
@@ -26,13 +24,10 @@ const createAccount = (req, res) => {
   const userModel = new UserModel();
   userModel.createUser(email, password)
     .then(() => {
-      res.json({
-        success: true,
-      });
+      res.json({});
     })
     .catch((error) => {
       res.status(400).json({
-        success: false,
         error,
       });
     });
@@ -46,7 +41,6 @@ const login = (req, res) => {
     || !password
   ) {
     res.status(400).json({
-      success: false,
       error: "Some mandatory fields are missing",
     });
     return;
@@ -54,15 +48,40 @@ const login = (req, res) => {
 
   const userModel = new UserModel();
   userModel.loginUser(email, password)
-    .then((token) => {
+    .then(({ token, refreshToken }) => {
       res.json({
-        success: true,
         token,
+        refreshToken,
       });
     })
     .catch((error) => {
       res.status(400).json({
-        success: false,
+        error,
+      })
+    });
+};
+
+const refreshToken = (req, res) => {
+  const { email, refreshToken } = req.body;
+
+  if (!email || !refreshToken) {
+    res.status(400).json({
+      success: false,
+      error: 'Some mandatory fields are missing',
+    });
+    return;
+  }
+
+  const userModel = new UserModel();
+  userModel.refreshToken(email, refreshToken)
+    .then(({ token, refreshToken }) => {
+      res.json({
+        token,
+        refreshToken,
+      });
+    })
+    .catch((error) => {
+      res.status(400).json({
         error,
       })
     });
@@ -71,4 +90,5 @@ const login = (req, res) => {
 module.exports = {
   createAccount,
   login,
+  refreshToken,
 };
